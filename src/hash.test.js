@@ -4,7 +4,7 @@
 // eslint-disable-next-line no-unused-vars
 const crypto = require("node:crypto")
 const hash = require("./hash")
-const makeKey = require("@jrc03c/make-key")
+const makeKey = require("./make-key")
 
 test("tests that values can be hashed correctly", async () => {
   const a = "Hello, world!"

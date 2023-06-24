@@ -1,5 +1,5 @@
 const hash = require("./hash")
-const makeKey = require("@jrc03c/make-key")
+const makeKey = require("./make-key")
 const stringify = require("./stringify")
 
 async function hashWithSalt(x, saltLength) {

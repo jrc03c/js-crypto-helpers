@@ -2,7 +2,7 @@
 const crypto = require("node:crypto")
 const hash = require("./hash")
 const hashWithSalt = require("./hash-with-salt")
-const makeKey = require("@jrc03c/make-key")
+const makeKey = require("./make-key")
 
 test("tests that values can be hashed with salt correctly", async () => {
   const a = "Hello, world!"
