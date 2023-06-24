@@ -1,9 +1,10 @@
-const { isObject, isString } = require("@jrc03c/js-math-tools")
-const parse = require("./parse")
-
-// adapted from:
+// NOTE: This function was adapted from:
 // - https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/encrypt#aes-gcm_2
 // - https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/deriveKey#pbkdf2_2
+
+const { isObject, isString } = require("@jrc03c/js-math-tools")
+const { parse } = require("@jrc03c/js-text-tools")
+
 async function decrypt(data, password) {
   data = parse(data)
 
@@ -48,9 +49,15 @@ async function decrypt(data, password) {
     ["encrypt", "decrypt"]
   )
 
-  return new TextDecoder().decode(
+  let out = new TextDecoder().decode(
     await crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, value)
   )
+
+  try {
+    return parse(out)
+  } catch (e) {
+    return out
+  }
 }
 
 module.exports = decrypt

@@ -1,12 +1,4 @@
-const stringify = require("./stringify")
-
-if (typeof crypto === "undefined") {
-  try {
-    var crypto = require("node:crypto")
-  } catch (e) {
-    // ...
-  }
-}
+const { stringify } = require("@jrc03c/js-text-tools")
 
 // adapted from: https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest
 async function hash(x) {

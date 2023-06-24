@@ -1,6 +1,6 @@
+const { stringify } = require("@jrc03c/js-text-tools")
 const hash = require("./hash")
 const makeKey = require("./make-key")
-const stringify = require("./stringify")
 
 async function hashWithSalt(x, saltLength) {
   if (typeof saltLength === "undefined") {

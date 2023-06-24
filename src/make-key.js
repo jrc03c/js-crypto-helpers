@@ -1,5 +1,6 @@
 // NOTE: This is NOT currently cryptographically secure, but it needs to be made
 // to be!
+
 const {
   assert,
   floor,
