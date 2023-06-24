@@ -6,8 +6,6 @@ const { isObject, isString } = require("@jrc03c/js-math-tools")
 const { parse } = require("@jrc03c/js-text-tools")
 
 async function decrypt(data, password) {
-  data = parse(data)
-
   if (!isObject(data)) {
     throw new Error(
       "The first argument passed into the `decrypt` function must be an object with properties 'iv', 'salt', and 'value' (i.e., the same object returned from the `encrypt` function)!"

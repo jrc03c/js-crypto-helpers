@@ -1,3 +1,7 @@
+// NOTE: This function was adapted from:
+// - https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/encrypt#aes-gcm_2
+// - https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/deriveKey#pbkdf2_2
+
 const { isNumber, isString, isUndefined } = require("@jrc03c/js-math-tools")
 const { stringify } = require("@jrc03c/js-text-tools")
 
@@ -5,9 +9,6 @@ function isNaturalNumber(x) {
   return isNumber(x) && x > 0 && parseInt(x) === x
 }
 
-// adapted from:
-// - https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/encrypt#aes-gcm_2
-// - https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/deriveKey#pbkdf2_2
 async function encrypt(data, password, salt, saltLength, ivLength) {
   saltLength = isUndefined(saltLength) ? 16 : saltLength
   ivLength = isUndefined(ivLength) ? 16 : ivLength
@@ -69,11 +70,11 @@ async function encrypt(data, password, salt, saltLength, ivLength) {
     new TextEncoder().encode(stringify(data))
   )
 
-  return stringify({
+  return {
     salt: salt,
     iv: iv,
     value: out,
-  })
+  }
 }
 
 module.exports = encrypt
