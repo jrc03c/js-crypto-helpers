@@ -21,7 +21,7 @@
     "prettier": "^2.8.8"
   },
   "dependencies": {
-    "@jrc03c/js-math-tools": "^0.0.54",
-    "@jrc03c/js-text-tools": "^0.0.18"
+    "@jrc03c/js-math-tools": "^0.0.57",
+    "@jrc03c/js-text-tools": "^0.0.19"
   }
 }
