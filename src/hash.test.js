@@ -4,7 +4,7 @@
 // eslint-disable-next-line no-unused-vars
 const crypto = require("node:crypto")
 const hash = require("./hash")
-const makeKey = require("./make-key")
+const randomString = require("./random-string")
 
 test("tests that values can be hashed correctly", async () => {
   const a = "Hello, world!"
@@ -13,10 +13,17 @@ test("tests that values can be hashed correctly", async () => {
   expect(b === (await hash(a))).toBe(true)
   expect((await hash(b)) === a).toBe(false)
 
-  const c = makeKey(4)
-  const d = makeKey(256)
+  const c = randomString(4)
+  const d = randomString(256)
   expect(await hash(c)).not.toBe(await hash(d))
   expect(await hash(c).length).toBe(await hash(d).length)
+
+  const salt = randomString(32)
+  const e = await hash("Hello, world!", salt)
+  const f = await hash("Hello, world!", salt)
+  const g = await hash("Hello, world!" + salt)
+  expect(e).toBe(f)
+  expect(e).toBe(g)
 
   const variables = [
     0,

@@ -29,7 +29,23 @@ const { encrypt, decrypt, hash } = require("@jrc03c/js-crypto-helpers")
 
 encrypt("My secret text", "p455w0rd!").then(result => {
   console.log(result)
-  // {"salt":{"constructor":"Uint8Array","flag":"FLAG_TYPED_ARRAY","values":[25,106,137,44,224,191,69,117,22,153,94,70,172,68,214,204]},"iv":{"constructor":"Uint8Array","flag":"FLAG_TYPED_ARRAY","values":[34,180,253,129,168,175,53,220,5,99,149,118,153,130,118,71]},"value":{"constructor":"ArrayBuffer","flag":"FLAG_TYPED_ARRAY","values":[45,54,83,15,249,104,90,126,21,70,31,185,131,113,77,136,165,0,142,149,218,107,20,61,173,140,150,231,2,20,132,26]}}
+  // {
+  //   salt: Uint8Array(16) [
+  //     195, 155, 101, 182, 202,
+  //     164, 202,  10,  16, 148,
+  //     156,   8, 142, 133, 109,
+  //     76
+  //   ],
+  //   iv: Uint8Array(16) [
+  //     99, 209, 115, 208, 54,  77,
+  //     246, 155,  47,  19,  3, 158,
+  //     156,  89, 205, 124
+  //   ],
+  //   value: ArrayBuffer {
+  //     [Uint8Contents]: <69 c6 04 bf e5 25 d1 2a 14 28 c9 25 4f 9e a6 e9 bb 85 92 5c 30 a0 db f3 04 ea a0 45 fe 3b 80 8d>,
+  //     byteLength: 32
+  //   }
+  // }
 
   decrypt(result, "p455w0rd!").then(orig => {
     console.log(orig)
@@ -39,7 +55,7 @@ encrypt("My secret text", "p455w0rd!").then(result => {
 
 hash("someone@example.com").then(result => {
   console.log(result)
-  // 22da9c986e9ea81edb1d9f476650d05790425cad633328aed7a4cf9469c567b7e5bec44bb61575c0a0235eb6516490c601d20fada8bc35feec672bbd875a839f
+  // a4dcddc4e706799ef4fcd15119077f072804fe679f64008be00b720621900b504ee99976446867865544f4384d0454448ac7d6232a2073389c5b8d43ce4b5ec5
 })
 ```
 
@@ -93,6 +109,7 @@ encrypt("My secret text", "p455w0rd!").then(async data => {
 Parameters:
 
 - `value` = A value to be hashed. Note that this value can be of any type, not just strings! Non-string values are converted to strings using this library's `stringify` function.
+- `salt` = A string to be added to `value` before hashing.
 
 Returns a `Promise` that resolves to a string.
 
@@ -100,58 +117,18 @@ Example:
 
 ```js
 const { hash } = require("@jrc03c/js-crypto-helpers")
+
+// without salt
 hash("Hello, world!").then(console.log)
 // f716fb41b25d366c6a3b86c3c04aad45500416fb56223dc56aa3ced1e775e15717f57f80a619067df61d7751a17e0d549979a32a079b9596ff79d9e856acb3ef
-```
 
-## `hashWithSalt`
+// with salt
+hash("Hello, world!", "This is a salt!").then(console.log)
+// fb355ba9f91f56836ae8b05fcae647f34073eb41cc63044d73fc101020a25a1a50045d9363fbbc1d97683da00eecdd6f06f994c4837f2349688292053e07d369
 
-Parameters:
-
-- `value` = A value to be hashed. Note that this value can be of any type, not just strings! Non-string values are converted to strings using this library's `stringify` function.
-- `saltLength` (optional) = A positive integer representing the length of the salt value to be generated. The default value is 256.
-
-Returns a `Promise` that resolves to an object with these properties:
-
-- `value` = The string result of the hashing process.
-- `salt` = The generated string that was appended to the stringified input value before it was hashed.
-
-Example:
-
-```js
-const { hashWithSalt } = require("@jrc03c/js-crypto-helpers")
-hashWithSalt("Hello, world!", 32).then(console.log)
-// {
-//   value: '1f25c72c8c3ddf66c87fcb1f653f522065e7d8ae3f491b699e39bd2e304b5006b1c0cae462dd94e6bc726a222ac94539fd8d53af234e5c3e3ede4f4b8a56359a',
-//   salt: 't09go0gyxt7238a8983jsc4ep997d9hn'
-// }
-```
-
-## `makeKey`
-
-Parameters:
-
-- `length` = A non-negative integer representing the length of the string to be returned.
-- `seed` (optional) = A number with which to seed the PRNG.
-- `charset` (optional) = A string containing the characters that should make up the returned string.
-
-Returns a string.
-
-> **NOTE:** This function is **NOT** currently cryptographically secure! My next major change will be to make it secure, but I haven't gotten to it yet.
-
-Example:
-
-```js
-const { makeKey } = require("@jrc03c/js-crypto-helpers")
-
-console.log(makeKey(32))
-// ks7942zscvl0o03p4w18ag92nu81s505
-// ☝️ your computer will likely generate a different value than the one above
-
-console.log(makeKey(32, 12345))
-// eqkq50959b4jg8y5a12i54o704t2ei9k
-// ☝️ your computer should generate exactly the same value as the one above,
-// assuming you use the same length and seed value!
+// with salt added to the original value instead of being passed as an argument
+hash("Hello, world!" + "This is a salt!").then(console.log)
+// fb355ba9f91f56836ae8b05fcae647f34073eb41cc63044d73fc101020a25a1a50045d9363fbbc1d97683da00eecdd6f06f994c4837f2349688292053e07d369
 ```
 
 ## `parse`
@@ -174,6 +151,27 @@ const s = stringify({ hello: "world" })
 const orig = parse(s)
 console.log(orig, typeof orig)
 // { hello: 'world' } object
+```
+
+## `randomString`
+
+Parameters:
+
+- `length` = A non-negative integer representing the length of the string to be returned.
+- `charset` (optional) = A string containing the characters that should make up the returned string.
+
+Returns a string.
+
+Example:
+
+```js
+const { randomString } = require("@jrc03c/js-crypto-helpers")
+
+console.log(randomString(32))
+// y3Qotz5cZZYdXGCuyZB2SymSmr6t5kmo
+
+console.log(randomString(32, "foo"))
+// oofoofoffooofofofoofoffoffooooff
 ```
 
 ## `stringify`
@@ -206,7 +204,3 @@ console.log(stringify(object, indentation))
 //   "hello": "world"
 // }
 ```
-
-# To-do
-
-- Make the `makeKey` function cryptographically secure.

@@ -4,9 +4,8 @@ const JSCryptoHelpers = {
   decrypt: require("./decrypt"),
   encrypt: require("./encrypt"),
   hash: require("./hash"),
-  hashWithSalt: require("./hash-with-salt"),
-  makeKey: require("./make-key"),
   parse,
+  randomString: require("./random-string"),
   stringify,
 
   dump() {
