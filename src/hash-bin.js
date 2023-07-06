@@ -1,46 +1,46 @@
-const { indent, unindent, wrap } = require("@jrc03c/js-text-tools")
-const { fg, fx } = require("@jrc03c/bash-colors")
-const fs = require("node:fs")
-const hash = require("./hash")
-const path = require("node:path")
+const { indent, unindent, wrap } = require("@jrc03c/js-text-tools");
+const { fg, fx } = require("@jrc03c/bash-colors");
+const fs = require("node:fs");
+const hash = require("./hash");
+const path = require("node:path");
 
-const { bright, dim } = fx
-const { cyan, yellow } = fg
+const { bright, dim } = fx;
+const { cyan, yellow } = fg;
 
 if (process.argv.length < 3 || process.argv.indexOf("--help") > -1) {
   console.log(
     wrap(
       indent(
         unindent(`
-				  Syntax:
+          Syntax:
 
-				    ${bright(cyan("hash [item]"))}
+            ${bright(cyan("hash [item]"))}
 
-				  Options:
+          Options:
 
-				    ${yellow("[item]")} = a file or some text
+            ${yellow("[item]")} = a file or some text
 
-				  Examples:
+          Examples:
 
-				    ${dim("# hash the contents of a file")}
-				    hash path/to/myfile.txt
+            ${dim("# hash the contents of a file")}
+            hash path/to/myfile.txt
 
-				    ${dim("# has some text")}
-				    hash "Hello, world!"
-				`),
+            ${dim("# has some text")}
+            hash "Hello, world!"
+        `),
         "  "
       )
     )
-  )
+  );
 
-  process.exit()
+  process.exit();
 }
 
-const text = Array.from(process.argv).slice(2).join(" ")
+const text = Array.from(process.argv).slice(2).join(" ");
 
 if (fs.existsSync(text) && fs.statSync(text).isFile()) {
-	const raw = fs.readFileSync(text, "utf8")
-	hash(raw).then(console.log)
+  const raw = fs.readFileSync(text, "utf8");
+  hash(raw).then(console.log);
 } else {
-	hash(text).then(console.log)
+  hash(text).then(console.log);
 }
