@@ -10,6 +10,12 @@ This library just provides a few thin wrappers around core JS `crypto` functions
 
 # Installation
 
+For command line use:
+
+```bash
+npm install -g @jrc03c/js-crypto-helpers
+```
+
 In Node / bundlers:
 
 ```bash
@@ -23,6 +29,19 @@ Or in the browser with a CDN:
 ```
 
 # Usage
+
+## Command line
+
+```bash
+decrypt --help
+encrypt --help
+hash --help
+random-string --help
+```
+
+> **NOTE:** I initially had some trouble calling the `hash` function from the command line, and I think that's because there maybe other programs that use that word. What I ended up doing was putting an `alias hash="node path/to/js-crypto-helpers/src/hash-bin.js"` in my `~/.bashrc` file.
+
+## Node / browser
 
 ```js
 const { encrypt, decrypt, hash } = require("@jrc03c/js-crypto-helpers")
@@ -59,7 +78,7 @@ hash("someone@example.com").then(result => {
 })
 ```
 
-# API
+# Programmatic API
 
 ## `decrypt`
 
