@@ -11,7 +11,7 @@ function randomString(n, charset) {
   } else {
     assert(
       isNumber(n) && Math.floor(n) === n && n > 0,
-      "The first value passed into the `randomString` function must be undefined or a positive integer representing the length of the returned string! If the target length is undefined, then the default value is 256."
+      "The first value passed into the `randomString` function must be undefined or a positive integer representing the length of the returned string! If no length is passed, then the default length will be 256."
     )
   }
 
