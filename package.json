@@ -25,6 +25,6 @@
   },
   "dependencies": {
     "@jrc03c/js-math-tools": "^0.0.57",
-    "@jrc03c/js-text-tools": "^0.0.19"
+    "@jrc03c/js-text-tools": "^0.0.22"
   }
 }
