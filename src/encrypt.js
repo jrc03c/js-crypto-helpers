@@ -25,7 +25,7 @@ async function encrypt(data, password, salt, saltLength, ivLength) {
   )
 
   assert(
-    !isNaturalNumber(saltLength),
+    isNaturalNumber(saltLength),
     "The fourth argument passed into the `encrypt` function must be undefined or a natural number (i.e., a positive integer) representing the length of the new salt to be generated. If a salt is passed as the third argument of the function, however, then the fourth argument is ignored."
   )
 
