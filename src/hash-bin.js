@@ -47,24 +47,22 @@ if (process.argv.length < 3 || helpArg.getValue()) {
 !(async () => {
   const outfile = outfileArg.getValue()
   const salt = saltArg.getValue()
-  const item = process.argv.at(-1)
 
-  if (fs.existsSync(item) && fs.statSync(item).isFile()) {
-    const raw = fs.readFileSync(item, "utf8")
-    const out = await hash(raw + salt)
+  const item = (() => {
+    const item = process.argv.at(-1)
 
-    if (outfile) {
-      safeWriteFileSync(outfile, out, "utf8")
+    if (fs.existsSync(item) && fs.statfsSync(item).isFile()) {
+      return fs.readFileSync(item, "utf8")
     } else {
-      console.log(out)
+      return process.argv.at(-1)
     }
+  })()
+
+  const out = await hash(item + salt)
+
+  if (outfile) {
+    safeWriteFileSync(outfile, out, "utf8")
   } else {
-    const out = await hash(item + salt)
-
-    if (outfile) {
-      safeWriteFileSync(outfile, out, "utf8")
-    } else {
-      console.log(out)
-    }
+    console.log(out)
   }
 })()
