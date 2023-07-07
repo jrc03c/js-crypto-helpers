@@ -4,18 +4,25 @@ const fs = require("node:fs")
 const hash = require("./hash")
 
 const { bright, dim } = fx
-const { cyan, yellow } = fg
+const { magenta, yellow } = fg
 
-if (process.argv.length < 3 || process.argv.indexOf("--help") > -1) {
+if (
+  process.argv.length < 3 ||
+  process.argv.length > 3 ||
+  process.argv.indexOf("--help") > -1 ||
+  process.argv.indexOf("-h") > -1
+) {
   console.log(
     wrap(
       indent(
         unindent(`
           Syntax:
 
-            ${bright(cyan("hash [item]"))}
+            ${bright(magenta("hash [options] [item]"))}
 
           Options:
+
+            ${yellow("--help, -h")} = show this help text again
 
             ${yellow("[item]")} = a file or some text
 
@@ -24,7 +31,7 @@ if (process.argv.length < 3 || process.argv.indexOf("--help") > -1) {
             ${dim("# hash the contents of a file")}
             hash path/to/myfile.txt
 
-            ${dim("# has some text")}
+            ${dim("# hash some text")}
             hash "Hello, world!"
         `),
         "  "
@@ -35,11 +42,11 @@ if (process.argv.length < 3 || process.argv.indexOf("--help") > -1) {
   process.exit()
 }
 
-const text = Array.from(process.argv).slice(2).join(" ")
+const item = process.argv[2]
 
-if (fs.existsSync(text) && fs.statSync(text).isFile()) {
-  const raw = fs.readFileSync(text, "utf8")
+if (fs.existsSync(item) && fs.statSync(item).isFile()) {
+  const raw = fs.readFileSync(item, "utf8")
   hash(raw).then(console.log)
 } else {
-  hash(text).then(console.log)
+  hash(item).then(console.log)
 }
