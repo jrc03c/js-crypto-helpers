@@ -26,5 +26,11 @@
   "dependencies": {
     "@jrc03c/js-math-tools": "^0.0.57",
     "@jrc03c/js-text-tools": "^0.0.22"
+  },
+  "bin": {
+    "decrypt": "./src/decrypt-bin.js",
+    "encrypt": "./src/encrypt-bin.js",
+    "hash": "./src/hash-bin.js",
+    "random-string": "./src/random-string-bin.js"
   }
 }
