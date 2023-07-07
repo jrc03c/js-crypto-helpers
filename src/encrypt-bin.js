@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const { stringify } = require("@jrc03c/js-text-tools")
 const { fg, fx } = require("@jrc03c/bash-colors")
 const Argument = require("./helpers/argument")

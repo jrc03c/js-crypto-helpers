@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const { fg, fx } = require("@jrc03c/bash-colors")
 const Argument = require("./helpers/argument")
 const fs = require("node:fs")
