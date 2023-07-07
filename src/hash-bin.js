@@ -1,52 +1,70 @@
-const { indent, unindent, wrap } = require("@jrc03c/js-text-tools")
 const { fg, fx } = require("@jrc03c/bash-colors")
+const Argument = require("./helpers/argument")
 const fs = require("node:fs")
 const hash = require("./hash")
+const safeWriteFileSync = require("./helpers/safe-write-file-sync")
+const showHelpText = require("./helpers/show-help-text")
 
 const { bright, dim } = fx
 const { magenta, yellow } = fg
 
-if (
-  process.argv.length < 3 ||
-  process.argv.length > 3 ||
-  process.argv.indexOf("--help") > -1 ||
-  process.argv.indexOf("-h") > -1
-) {
-  console.log(
-    wrap(
-      indent(
-        unindent(`
-          Syntax:
+const helpArg = new Argument("h", "help", false)
+const outfileArg = new Argument("o", "outfile", true)
+const saltArg = new Argument("s", "salt", true)
 
-            ${bright(magenta("hash [options] [item]"))}
+if (process.argv.length < 3 || helpArg.getValue()) {
+  showHelpText(`
+    Syntax:
 
-          Options:
+      ${bright(magenta("hash [options] [item]"))}
 
-            ${yellow("--help, -h")} = show this help text again
+    Options:
 
-            ${yellow("[item]")} = a file or some text
+      ${yellow("--help, -h")} = show this help text again
 
-          Examples:
+      ${yellow(
+        "--outfile, -o"
+      )} = (optional) an output file to which to write the hashed data; if not provided, then the hashed data is just printed to stdout
 
-            ${dim("# hash the contents of a file")}
-            hash path/to/myfile.txt
+      ${yellow(
+        "--salt, -s"
+      )} = (optional) a salt string to be appended to the item before hashing
 
-            ${dim("# hash some text")}
-            hash "Hello, world!"
-        `),
-        "  "
-      )
-    )
-  )
+      ${yellow("[item]")} = a file or some text
+
+    Examples:
+
+      ${dim("# hash the contents of a file")}
+      hash path/to/myfile.txt
+
+      ${dim("# hash some text")}
+      hash "Hello, world!"
+  `)
 
   process.exit()
 }
 
-const item = process.argv[2]
+!(async () => {
+  const outfile = outfileArg.getValue()
+  const salt = saltArg.getValue()
+  const item = process.argv.at(-1)
 
-if (fs.existsSync(item) && fs.statSync(item).isFile()) {
-  const raw = fs.readFileSync(item, "utf8")
-  hash(raw).then(console.log)
-} else {
-  hash(item).then(console.log)
-}
+  if (fs.existsSync(item) && fs.statSync(item).isFile()) {
+    const raw = fs.readFileSync(item, "utf8")
+    const out = await hash(raw + salt)
+
+    if (outfile) {
+      safeWriteFileSync(outfile, out, "utf8")
+    } else {
+      console.log(out)
+    }
+  } else {
+    const out = await hash(item + salt)
+
+    if (outfile) {
+      safeWriteFileSync(outfile, out, "utf8")
+    } else {
+      console.log(out)
+    }
+  }
+})()
