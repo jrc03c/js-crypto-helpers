@@ -6,7 +6,7 @@ This library just provides a few thin wrappers around core JS `crypto` functions
 - [`crypto.subtle.deriveKey` : PBKDF2](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/deriveKey#pbkdf2_2)
 - [`crypto.subtle.digest`](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest)
 
-> **DISCLAIMER:** I am _not_ a cryptography professional. Use at your own risk!
+> 🚨 **DISCLAIMER:** I am _not_ a cryptography professional. Use at your own risk! 🚨
 
 # Installation
 
