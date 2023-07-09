@@ -2,6 +2,7 @@
 const crypto = require("node:crypto")
 const decrypt = require("./decrypt")
 const encrypt = require("./encrypt")
+const randomString = require("./random-string")
 jest.setTimeout(60000)
 
 test("tests that data can be encrypted and decrypted correctly", async () => {
@@ -52,6 +53,20 @@ test("tests that data can be encrypted and decrypted correctly", async () => {
     },
     { hello: "world" },
   ]
+
+  for (const v of variables) {
+    const pass = randomString()
+    const e = await encrypt(v, pass)
+    let failed = false
+
+    try {
+      await decrypt(e, pass)
+    } catch (e) {
+      failed = true
+    }
+
+    expect(failed).toBe(false)
+  }
 
   for (const v1 of variables) {
     for (const v2 of variables) {

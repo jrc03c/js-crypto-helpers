@@ -10,6 +10,7 @@ const {
 } = require("@jrc03c/js-math-tools")
 
 const { stringify } = require("@jrc03c/js-text-tools")
+const base64Encode = require("./base-64-encode")
 
 function isNaturalNumber(x) {
   return isNumber(x) && x > 0 && parseInt(x) === x
@@ -72,11 +73,13 @@ async function encrypt(data, password, salt, saltLength, ivLength) {
     new TextEncoder().encode(stringify(data))
   )
 
-  return {
-    salt: salt,
-    iv: iv,
-    value: out,
-  }
+  return base64Encode(
+    stringify({
+      salt: salt,
+      iv: iv,
+      value: out,
+    })
+  )
 }
 
 module.exports = encrypt
