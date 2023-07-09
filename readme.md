@@ -39,6 +39,8 @@ hash --help
 random-string --help
 ```
 
+> **NOTE:** Be aware that these functions will copy their results to your clipboard if (1) you have [`xsel`](http://www.kfish.org/software/xsel/) installed and (2) you don't specify an output file (i.e., you intend the output to be printed to `stdout`).
+
 > **NOTE:** I initially had some trouble calling the `hash` function from the command line, and I think that's because there maybe other programs that use that word. What I ended up doing was putting this in my `~/.bashrc` file:
 >
 > `alias hash="node path/to/js-crypto-helpers/src/hash-bin.js"`.

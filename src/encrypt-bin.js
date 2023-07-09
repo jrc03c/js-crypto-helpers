@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const { execSync } = require("node:child_process")
 const { stringify } = require("@jrc03c/js-text-tools")
 const { fg, fx } = require("@jrc03c/bash-colors")
 const Argument = require("./helpers/argument")
@@ -77,5 +78,11 @@ const helpText = `
     safeWriteFileSync(outfile, out, "utf8")
   } else {
     console.log(out)
+
+    try {
+      execSync(`echo "${out}" | xsel -b`, { encoding: "utf8" })
+    } catch (e) {
+      // ...
+    }
   }
 })()
