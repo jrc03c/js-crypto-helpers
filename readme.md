@@ -146,9 +146,9 @@ Parameters:
 
 - `value` = A value to be encrypted. Note that this value can be of any type, not just strings! The only caveat is that objects instantiated from specific classes will not be decrypted back into their original instance form; instead, they'll be returned as plain JS objects. For example, if you create a class called `Foo`, create an instance of that class named `foo`, encrypt that instance, and then decrypt it again later, it will probably still have most of the visible properties of `foo`, but it will no longer be an instance of the `Foo` class.
 - `password` = A string.
-- `salt` (optional) = A one-dimensional `UInt8Array`. The default value is undefined.
-- `saltLength` (optional) = A positive integer representing the length of the salt to be generated. If `salt` is passed as well, then `saltLength` is ignored. The default value is 16.
-- `ivLength` (optional) = A positive integer representing the length of the initialization vector to be generated. The default value is 16.
+- `salt` = (optional) A one-dimensional `UInt8Array`. The default value is undefined.
+- `saltLength` = (optional) A positive integer representing the length of the salt to be generated. If `salt` is passed as well, then `saltLength` is ignored. The default value is 16.
+- `ivLength` = (optional) A positive integer representing the length of the initialization vector to be generated. The default value is 16.
 
 Returns:
 
@@ -226,7 +226,7 @@ console.log(typeof orig)
 Parameters:
 
 - `length` = A non-negative integer representing the length of the string to be returned.
-- `charset` (optional) = A string containing the characters of which the returned string should be composed.
+- `charset` = (optional) A string containing the characters of which the returned string should be composed.
 
 Returns:
 
@@ -253,7 +253,7 @@ Technically speaking, this function is just re-exported from the [@jrc03c/js-tex
 Parameters:
 
 - `value` = A value to be stringified.
-- `indentation` (optional) = A string used to indent each line in the returned string. If not passed, the returned string won't contain any line breaks or indentation (except, of course, where strings already inside the object contain line breaks and indentations). This parameter is very similar to the third argument passed into `JSON.stringify` (e.g., `JSON.stringify(myObject, null, 2)`) except that `indentation` in this implementation can be any characters, not just spaces. Of course, that opens up the possibility of creating invalid JSON, but I'm not too worried about that.
+- `indentation` = (optional) A string used to indent each line in the returned string. If not passed, the returned string won't contain any line breaks or indentation (except, of course, where strings already inside the object contain line breaks and indentations). This parameter is very similar to the third argument passed into `JSON.stringify` (e.g., `JSON.stringify(myObject, null, 2)`) except that `indentation` in this implementation can be any characters, not just spaces. Of course, that opens up the possibility of creating invalid JSON, but I'm not too worried about that.
 
 Returns:
 
