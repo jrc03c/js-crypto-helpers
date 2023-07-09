@@ -246,7 +246,7 @@ console.log(randomString(32, "foo"))
 
 ## `stringify`
 
-Technically speaking, this function is just re-exported from the [@jrc03c/js-text-tools](https://github.com/jrc03c/js-text-tools) library without any modification. See the source code there for implementation details.
+Technically speaking, this function is just re-exported from the [@jrc03c/js-text-tools](https://github.com/jrc03c/js-text-tools) library without any modification. See the source code there for implementation details, and see the notes below the [`parse`](#parse) function for more information.
 
 > **NOTE:** This function will destroy any circular references that exist in objects.
 
