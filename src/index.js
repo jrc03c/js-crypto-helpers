@@ -5,6 +5,7 @@ const JSCryptoHelpers = {
   base64Encode: require("./base-64-encode"),
   decrypt: require("./decrypt"),
   encrypt: require("./encrypt"),
+  errors: require("./errors"),
   hash: require("./hash"),
   parse,
   randomString: require("./random-string"),
