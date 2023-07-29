@@ -1,9 +1,7 @@
-// eslint-disable-next-line no-unused-vars
-const crypto = require("node:crypto")
 const decrypt = require("./decrypt")
 const encrypt = require("./encrypt")
 const randomString = require("./random-string")
-jest.setTimeout(60000)
+jest.setTimeout(999999)
 
 test("tests that data can be encrypted and decrypted correctly", async () => {
   const text = "Hello, world!"

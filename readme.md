@@ -6,6 +6,11 @@ This library just provides a few thin wrappers around core JS `crypto` functions
 - [`crypto.subtle.deriveKey` : PBKDF2](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/deriveKey#pbkdf2_2)
 - [`crypto.subtle.digest`](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest)
 
+I also followed these recommendations, which are described [here](https://soatok.blog/2022/12/29/what-we-do-in-the-etc-shadow-cryptography-with-passwords/#recommendations):
+
+- PBKDF2 w/ 32-byte salt w/ SHA-512 @ 2,100,000 iterations
+- AES-256 in GCM mode w/ 32-byte initialization vector
+
 > 🚨 **DISCLAIMER:** I am _not_ a cryptography professional. Use at your own risk! 🚨
 
 # Installation

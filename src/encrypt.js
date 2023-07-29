@@ -12,8 +12,8 @@ function isNaturalNumber(x) {
 }
 
 async function encrypt(data, password, salt, saltLength, ivLength) {
-  saltLength = isUndefined(saltLength) ? 16 : saltLength
-  ivLength = isUndefined(ivLength) ? 16 : ivLength
+  saltLength = isUndefined(saltLength) ? 32 : saltLength
+  ivLength = isUndefined(ivLength) ? 32 : ivLength
 
   if (!isString(password) && password.length > 0) {
     throw new Error(
@@ -58,8 +58,8 @@ async function encrypt(data, password, salt, saltLength, ivLength) {
       {
         name: "PBKDF2",
         salt,
-        iterations: 100000,
-        hash: "SHA-256",
+        iterations: 2100000,
+        hash: "SHA-512",
       },
       keyMaterial,
       { name: "AES-GCM", length: 256 },

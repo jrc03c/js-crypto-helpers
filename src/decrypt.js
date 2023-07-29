@@ -45,8 +45,8 @@ async function decrypt(data, password) {
       {
         name: "PBKDF2",
         salt,
-        iterations: 100000,
-        hash: "SHA-256",
+        iterations: 2100000,
+        hash: "SHA-512",
       },
       keyMaterial,
       { name: "AES-GCM", length: 256 },
