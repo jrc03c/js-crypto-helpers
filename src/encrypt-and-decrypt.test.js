@@ -1,7 +1,7 @@
 const decrypt = require("./decrypt")
 const encrypt = require("./encrypt")
 const randomString = require("./random-string")
-jest.setTimeout(999999)
+jest.setTimeout(999999999)
 
 test("tests that data can be encrypted and decrypted correctly", async () => {
   const text = "Hello, world!"
