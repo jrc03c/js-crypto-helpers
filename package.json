@@ -1,6 +1,6 @@
 {
   "name": "@jrc03c/js-crypto-helpers",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "just simple wrappers around core js crypto functions",
   "main": "src/index.js",
   "scripts": {
