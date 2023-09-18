@@ -156,7 +156,7 @@ Parameters:
 - `options` = (optional) An object with these properties:
   - `saltLength` = (optional) A positive integer representing the length of the salt to be generated. If `salt` is passed as well, then `saltLength` is ignored. The default value is 16.
   - `ivLength` = (optional) A positive integer representing the length of the initialization vector to be generated. The default value is 16.
-  - `keyIterations` = (optional) A positive integer representing the number of iterations used by the key derivation algorithm. The default value is 210,000. Note that while this is a [recommended](https://soatok.blog/2022/12/29/what-we-do-in-the-etc-shadow-cryptography-with-passwords/#recommendations) value, it can take quite a while to encrypt even moderately small chunks of data on modern consumer hardware. If your threat model doesn't include state actors or actors with access to enormous amounts of computing power, then it's probably safe to lower this number.
+  - `keyIterations` = (optional) A positive integer representing the number of iterations used by the key derivation algorithm. The default value is 210,000.
 
 Returns:
 
