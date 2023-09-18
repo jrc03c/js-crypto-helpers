@@ -3,17 +3,16 @@
 // - https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/deriveKey#pbkdf2_2
 
 const { EncryptionError } = require("./errors")
-const { isNumber, isString, isUndefined } = require("@jrc03c/js-math-tools")
+const { isString } = require("@jrc03c/js-math-tools")
 const { stringify } = require("@jrc03c/js-text-tools")
 const base64Encode = require("./base-64-encode")
+const isNaturalNumber = require("./helpers/is-natural-number")
 
-function isNaturalNumber(x) {
-  return isNumber(x) && x > 0 && parseInt(x) === x
-}
-
-async function encrypt(data, password, salt, saltLength, ivLength) {
-  saltLength = isUndefined(saltLength) ? 32 : saltLength
-  ivLength = isUndefined(ivLength) ? 32 : ivLength
+async function encrypt(data, password, options) {
+  options = options || {}
+  const saltLength = options.saltLength || 32
+  const ivLength = options.ivLength || 32
+  const keyIterations = options.keyIterations || 210000
 
   if (!isString(password) && password.length > 0) {
     throw new Error(
@@ -23,28 +22,26 @@ async function encrypt(data, password, salt, saltLength, ivLength) {
 
   if (!isNaturalNumber(saltLength)) {
     throw new Error(
-      "The fourth argument passed into the `encrypt` function must be undefined or a natural number (i.e., a positive integer) representing the length of the new salt to be generated. If a salt is passed as the third argument of the function, however, then the fourth argument is ignored."
+      "The 'saltLength' option passed into the `encrypt` function must be undefined or a natural number (i.e., a positive integer) representing the length of the new salt to be generated."
     )
   }
 
   if (!isNaturalNumber(ivLength)) {
     throw new Error(
-      "The fifth argument passed into the `encrypt` function must be undefined or a natural number (i.e., a positive integer) representing the length of the initialization vector to be generated."
+      "The 'ivLength' option passed into the `encrypt` function must be undefined or a natural number (i.e., a positive integer) representing the length of the initialization vector to be generated."
     )
   }
 
-  if (!isUndefined(salt) && !(salt instanceof Uint8Array)) {
+  if (!isNaturalNumber(keyIterations)) {
     throw new Error(
-      "The third argument passed into the `encrypt` function must be undefined or a 1-dimensional Uint8Array representing the 'salt' to be used in the encryption. If you pass an undefined value as the third argument, the function will generate a new salt for you automatically. Or you could generate your own salt using something like this: `crypto.getRandomValues(new Uint8Array(12))` Importantly, use only cryptographically secure random numbers!"
+      "The 'keyIterations' option passed into the `encrypt` function must be undefined or a natural number (i.e., a positive integer) representing the number of iterations used during the key derivation."
     )
   }
 
-  let out, iv
+  let out, salt, iv
 
   try {
-    salt = isUndefined(salt)
-      ? crypto.getRandomValues(new Uint8Array(saltLength))
-      : salt
+    salt = crypto.getRandomValues(new Uint8Array(saltLength))
 
     const keyMaterial = await crypto.subtle.importKey(
       "raw",
@@ -58,7 +55,7 @@ async function encrypt(data, password, salt, saltLength, ivLength) {
       {
         name: "PBKDF2",
         salt,
-        iterations: 2100000,
+        iterations: keyIterations,
         hash: "SHA-512",
       },
       keyMaterial,

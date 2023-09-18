@@ -8,7 +8,7 @@ This library just provides a few thin wrappers around core JS `crypto` functions
 
 I also followed these recommendations, which are described [here](https://soatok.blog/2022/12/29/what-we-do-in-the-etc-shadow-cryptography-with-passwords/#recommendations):
 
-- PBKDF2 w/ 32-byte salt w/ SHA-512 @ 2,100,000 iterations
+- PBKDF2 w/ 32-byte salt w/ SHA-512 @ 210,000 iterations
 - AES-256 in GCM mode w/ 32-byte initialization vector
 
 > 🚨 **DISCLAIMER:** I am _not_ a cryptography professional. Use at your own risk! 🚨
@@ -129,6 +129,8 @@ Parameters:
 
 - `data` = A string that was previously returned by the `encrypt` function.
 - `password` = A string.
+- `options` = (optional) An object with these properties:
+  - `keyIterations` = (optional) A positive integer representing the number of iterations used by the key derivation algorithm. The default value is 210,000. Note that this number must be the same as the number of iterations used to encrypt the original data.
 
 Returns:
 
@@ -151,9 +153,10 @@ Parameters:
 
 - `value` = A value to be encrypted. Note that this value can be of any type, not just strings! The only caveat is that objects instantiated from specific classes will not be decrypted back into their original instance form; instead, they'll be returned as plain JS objects. For example, if you create a class called `Foo`, create an instance of that class named `foo`, encrypt that instance, and then decrypt it again later, it will probably still have most of the visible properties of `foo`, but it will no longer be an instance of the `Foo` class.
 - `password` = A string.
-- `salt` = (optional) A one-dimensional `UInt8Array`. The default value is undefined.
-- `saltLength` = (optional) A positive integer representing the length of the salt to be generated. If `salt` is passed as well, then `saltLength` is ignored. The default value is 16.
-- `ivLength` = (optional) A positive integer representing the length of the initialization vector to be generated. The default value is 16.
+- `options` = (optional) An object with these properties:
+  - `saltLength` = (optional) A positive integer representing the length of the salt to be generated. If `salt` is passed as well, then `saltLength` is ignored. The default value is 16.
+  - `ivLength` = (optional) A positive integer representing the length of the initialization vector to be generated. The default value is 16.
+  - `keyIterations` = (optional) A positive integer representing the number of iterations used by the key derivation algorithm. The default value is 210,000. Note that while this is a [recommended](https://soatok.blog/2022/12/29/what-we-do-in-the-etc-shadow-cryptography-with-passwords/#recommendations) value, it can take quite a while to encrypt even moderately small chunks of data on modern consumer hardware. If your threat model doesn't include state actors or actors with access to enormous amounts of computing power, then it's probably safe to lower this number.
 
 Returns:
 
@@ -230,7 +233,7 @@ console.log(typeof orig)
 
 Parameters:
 
-- `length` = A non-negative integer representing the length of the string to be returned.
+- `length` = A positive integer representing the length of the string to be returned.
 - `charset` = (optional) A string containing the characters of which the returned string should be composed.
 
 Returns:

@@ -1,11 +1,12 @@
-const { isNumber, isString, isUndefined } = require("@jrc03c/js-math-tools")
+const { isString, isUndefined } = require("@jrc03c/js-math-tools")
 const { RandomStringGenerationError } = require("./errors")
+const isNaturalNumber = require("./helpers/is-natural-number")
 
 function randomString(n, charset) {
   if (isUndefined(n)) {
     n = 256
   } else {
-    if (!isNumber(n) || Math.floor(n) !== n || n <= 0) {
+    if (!isNaturalNumber(n)) {
       throw new Error(
         "The first value passed into the `randomString` function must be undefined or a positive integer representing the length of the returned string! If no length is passed, then the default length will be 256."
       )

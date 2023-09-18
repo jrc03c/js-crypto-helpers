@@ -6,8 +6,12 @@ const { DecryptionError } = require("./errors")
 const { isString } = require("@jrc03c/js-math-tools")
 const { parse } = require("@jrc03c/js-text-tools")
 const base64Decode = require("./base-64-decode")
+const isNaturalNumber = require("./helpers/is-natural-number")
 
-async function decrypt(data, password) {
+async function decrypt(data, password, options) {
+  options = options || {}
+  const keyIterations = options.keyIterations || 210000
+
   if (!isString(data)) {
     throw new Error(
       "The first argument passed into the `decrypt` function must be a string (i.e., the same string returned from the `encrypt` function)!"
@@ -17,6 +21,12 @@ async function decrypt(data, password) {
   if (!isString(password) || password.length === 0) {
     throw new Error(
       "The second argument passed into the `decrypt` function must be a string representing the password with which to decrypt the encrypted data."
+    )
+  }
+
+  if (!isNaturalNumber(keyIterations)) {
+    throw new Error(
+      "The 'keyIterations' option passed into the `decrypt` function must be undefined or a natural number (i.e., a positive integer) representing the number of iterations used during the key derivation. NOTE: For decryption to be successful, this number must match the number of iterations that was used during the encryption of the data."
     )
   }
 
@@ -45,7 +55,7 @@ async function decrypt(data, password) {
       {
         name: "PBKDF2",
         salt,
-        iterations: 2100000,
+        iterations: keyIterations,
         hash: "SHA-512",
       },
       keyMaterial,
