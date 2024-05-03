@@ -57,7 +57,7 @@ test("tests that the `base64Decode` and `base64Encode` functions work as expecte
   variables.forEach(x => {
     const y = base64Encode(stringify(x))
     const z = parse(base64Decode(y))
-    expect(isEqual(x, y)).not.toBe(true)
+    expect(isEqual(x, y)).toBe(false)
     expect(isEqual(x, z)).toBe(true)
   })
 
