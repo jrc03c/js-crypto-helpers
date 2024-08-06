@@ -1,3 +1,7 @@
+> ⚠️ **NOTE:** ⚠️ This project is being merged into a monorepo [here](https://github.com/jrc03c/monorepo/tree/main/packages/js-crypto-helpers). This repo will soon be archived.
+
+---
+
 # Intro
 
 This library just provides a few thin wrappers around core JS `crypto` functions with sane defaults. I mostly adapted these functions from the following MDN articles:
